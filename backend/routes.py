@@ -51,3 +51,16 @@ def parse_json(data):
 ######################################################################
 # INSERT CODE HERE
 ######################################################################
+@app.route("/health")
+def health():
+    return jsonify(dict(status="OK")), 200
+
+@app.route("/count")
+def count():
+    """return length of data"""
+    try:
+        count = db.songs.count_documents({})
+        return jsonify(dict(count=count)), 200
+    except Exception as e:
+        app.logger.error(f"Error fetching song count: {str(e)}")
+        return jsonify(dict(error="Unable to fetch song count")), 500
